@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import NewsItem from './NewsItem';
 
-const NewsList = ()=> {
+const NewsList = ({category})=> {
 
   const [articles, setArticles] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -13,8 +13,9 @@ const NewsList = ()=> {
     const fetchData = async ()=> {
       setLoading(true)
       try{
+        const query = category === 'all'? "" : `&category=${category}`;
         const response = await axios.get(
-          'https://newsapi.org/v2/top-headlines?country=kr&apiKey=3ae77db5a80743df8bf855f48c84afd1'
+          `https://newsapi.org/v2/top-headlines?country=kr${query}&apiKey=3ae77db5a80743df8bf855f48c84afd1`
         )
         console.log(response)
         setArticles(response.data.articles)
@@ -26,7 +27,7 @@ const NewsList = ()=> {
     }
     // useEffect에서 사용할 진짜 함수!!
     fetchData()
-  },[])
+  },[category])
 
   
   // 대기중화면
